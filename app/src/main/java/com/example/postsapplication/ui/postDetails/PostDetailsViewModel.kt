@@ -28,6 +28,8 @@ class PostDetailsViewModel @ViewModelInject constructor( val repo: DataRepo) : B
             getPostWithID(id)
              getPostComments(id)
 
+
+
     }
      fun getPostWithID(id:Int) {
 

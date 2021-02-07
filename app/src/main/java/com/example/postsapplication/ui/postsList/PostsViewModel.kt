@@ -10,39 +10,46 @@ import com.example.postsapplication.data.repo.HandleNet
 import com.example.postsapplication.models.PostModel
 import com.example.postsapplication.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Named
 
 
-public class PostsViewModel @ViewModelInject constructor( val repo: DataRepo) : BaseViewModel() {
+public class PostsViewModel @ViewModelInject constructor(val repo: DataRepo) : BaseViewModel() {
     var isLoadingSwipRefrsh = ObservableField(false)
     var liveData: MutableLiveData<List<PostModel>> = MutableLiveData()
     var page = 0
     var counter = ObservableField<Int>(0)
     private var list: MutableList<PostModel> = ArrayList<PostModel>()
 
-    private fun getAllPostsFromApi() {
+    private fun getUpdatePosts() {
         viewModelScope.launch(Dispatchers.IO) {
-            isLoading.set(true)
-            try {
-                val response = HandleNet().safeApiCall(this@PostsViewModel) {
+            val newList = async { getAllPostsFromApi() }
+            newList.await()?.let {
+                page = 0
+                counter.set(0)
+                list.clear()
+                liveData.postValue(list)
+                insertAllPostsToDb(it)
+            }
+
+
+        }
+    }
+
+    private suspend fun getAllPostsFromApi(): List<PostModel>? {
+        isLoading.set(true)
+        try {
+            val response = HandleNet().safeApiCall(this@PostsViewModel) {
                 repo.getPostsListFromApi()
             }!!
-             response?.let {
-                 page = 0
-                 counter.set(0)
-                 list.clear()
-                 liveData.postValue(list)
-                insertAllPostsToDb(response)
-
-            }
-            }catch (e: Exception){}
-            finally {
-               // isLoading.set(false)
-                isLoadingSwipRefrsh.set(false)
-                Log.d("dndndndndn","here")
-            }
+            return response
+        } catch (e: Exception) {
+        } finally {
+            isLoadingSwipRefrsh.set(false)
         }
+
+        return null
     }
 
     fun insertAllPostsToDb(posts: List<PostModel>) {
@@ -50,16 +57,15 @@ public class PostsViewModel @ViewModelInject constructor( val repo: DataRepo) : 
             viewModelScope.launch(Dispatchers.IO) {
                 repo.deleteTable()
                 repo.insertPostsListFromDb(posts)
-
                 getPosts()
             }
         } catch (e: Exception) {
 
+        } finally {
         }
     }
 
-     fun getPosts() {
-
+    fun getPosts() {
         viewModelScope.launch(Dispatchers.IO) {
             isLoading.set(true)
             try {
@@ -72,23 +78,21 @@ public class PostsViewModel @ViewModelInject constructor( val repo: DataRepo) : 
                     page++
 
                 } else if (page == 0) {
-                    Log.d("dndndndndn","first")
-                    getAllPostsFromApi()
-                    Log.d("dndndndndn","end")
+                    getUpdatePosts()
                 } else {
                     // end of list
 
                 }
             } catch (e: Exception) {
-             } finally {
+            } finally {
                 isLoading.set(false)
-             }
+            }
         }
     }
 
-    fun refreshList()  {
+    fun refreshList() {
         isLoadingSwipRefrsh.set(true)
-        getAllPostsFromApi()
+        getUpdatePosts()
     }
 
 
