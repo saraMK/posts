@@ -10,9 +10,9 @@ import java.io.IOException
 import java.net.SocketTimeoutException
 
  class HandleNet {
-    suspend inline fun <T> safeApiCall(
+    suspend  fun <T> safeApiCall(
         emitter: RemoteErrorEmitter,
-        crossinline responseFunction: suspend () -> T
+         responseFunction: suspend () -> T
     ): T? {
         return try {
             val response = withContext(Dispatchers.IO) { responseFunction.invoke() }
