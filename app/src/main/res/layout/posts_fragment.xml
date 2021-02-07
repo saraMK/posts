@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.postsapplication.ui.postsList.PostsViewModel" />
+    </data>
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+        android:background="@drawable/blue_curve"
+    tools:context=".ui.postsList.PostsFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="@{@string/posts(viewModel.counter)}"
+        android:id="@+id/postTxt"
+        android:fontFamily="@font/amiri_bold"
+        android:layout_margin="10dp"/>
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/postTxt"
+            app:onRefreshListener="@{()-> viewModel.refreshList()}"
+            app:refreshing="@{viewModel.isLoadingSwipRefrsh}">
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:itemCount="5"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+         tools:listitem="@layout/post_item"
+
+        android:id="@+id/postList"/>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <include layout="@layout/loader"
+            app:viewModel="@{viewModel}"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+            <include layout="@layout/alert_msg"
+
+                app:viewModel="@{viewModel}"/>
+        </LinearLayout>
+</RelativeLayout>
+</layout>

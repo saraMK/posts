@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.example.postsapplication.models.PostModel" />
+    </data>
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+     android:elevation="1dp"
+    app:cardCornerRadius="5dp"
+    android:layout_marginBottom="5dp">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_bg"
+     android:orientation="vertical"
+    android:padding="15dp"
+
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:id="@+id/title"
+        android:fontFamily="@font/amiri_bold"
+        android:text="@{model.title}"
+        android:textStyle="bold"
+        android:singleLine="true"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:id="@+id/body"
+        android:layout_marginTop="15dp"
+        android:textSize="13sp"
+        android:singleLine="true"
+        android:fontFamily="@font/amiri_regular"
+        android:text="@{model.body}"
+        android:textStyle="bold"
+        />
+</LinearLayout>
+</androidx.cardview.widget.CardView>
+</layout>

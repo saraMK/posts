@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="com.example.postsapplication.ui.base.BaseViewModel" />
+    </data>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/alrt_bg"
+    android:padding="12dp"
+    android:gravity="bottom"
+    android:layout_margin="10dp"
+    android:visibility="@{viewModel.showDialog?View.VISIBLE:View.GONE}">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/amiri_bold"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:text="@string/noConnection"
+        />
+</LinearLayout>
+</layout>

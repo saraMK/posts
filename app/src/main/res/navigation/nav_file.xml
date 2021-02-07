@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_file"
+    app:startDestination="@id/navigation_posts">
+    <fragment
+        android:id="@+id/navigation_posts"
+        android:name="com.example.postsapplication.ui.postsList.PostsFragment"
+        tools:layout="@layout/posts_fragment"
+        >
+        <action android:id="@+id/navigation_posts_details_nav"
+            app:destination="@id/navigation_posts_details"
+
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_posts_details"
+        android:name="com.example.postsapplication.ui.postDetails.PostDetailsFragment"
+        tools:layout="@layout/post_details_fragment"
+        >
+
+    </fragment>
+</navigation>
